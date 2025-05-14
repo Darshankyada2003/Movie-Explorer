@@ -39,29 +39,40 @@ const MovieDetail = () => {
 
 
   return (
-
-    <div className='p-6 bg-gradient-to-b from-black to-gray-900 min-h-screen text-white'>
+    <div className='bg-black text-white min-h-screen'>
       {movie && (
-        <div className='flex flex-col md:flex-row gap-6'>
-
-          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.name} className='w-full md:w-64 rounded' />
-          <div>
-            <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
-            <p className="text-sm text-gray-400 mb-4">{movie.release_date} • ⭐ {movie.vote_average}</p>
-            <div className='mb-4'>
-              <strong>Genres:</strong> {''}
-              {movie.genres.map((g) => g.name).join(', ')}
+        <div className='relative'>
+          {/* BACKDROP */}
+          <div className='relative h-[70vh] w-full'>
+            <img
+              src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+              alt={movie.title}
+              className='w-full h-full object-cover brightness-50'
+            />
+            <div className='absolute inset-0 bg-gradient-to-b from-transparent to-black'></div>
+            <div className='absolute bottom-8 left-6 md:left-16 max-w-3xl'>
+              <h1 className='text-4xl md:text-6xl font-bold mb-4'>{movie.title}</h1>
+              <p className='text-sm text-gray-300 mb-2'>
+                {movie.release_date} • ⭐ {movie.vote_average}
+              </p>
+              <p className='text-gray-200 mb-4'>{movie.genres.map(g => g.name).join(', ')}</p>
+              <p className='text-gray-300 hidden md:block'>{movie.overview}</p>
             </div>
-            <p className='mb-6'>{movie.overview}</p>
-            <div>
-              <h2 className='text-2xl font-semibold mb-2'>Top Cast</h2>
-              <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
-                {credit?.cast?.slice(0, 10).map((actor) => (
-                  <div key={actor.id} className='text-center'>
-                    <img src={
-                      actor.profile_path
-                        ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
-                        : 'https://via.placeholder.com/185x278?text=No+Image'}
+          </div>
+
+          {/* CAST */}
+          {credit && (
+            <div className='mt-12 px-6 md:px-16'>
+              <h2 className='text-2xl font-semibold mb-4'>Top Cast</h2>
+              <div className='flex overflow-x-auto space-x-4 scrollbar-hide pb-2 no-scrollbar'>
+                {credit.cast.slice(0, 10).map(actor => (
+                  <div key={actor.id} className='min-w-[120px] text-center'>
+                    <img
+                      src={
+                        actor.profile_path
+                          ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                          : 'https://via.placeholder.com/185x278?text=No+Image'
+                      }
                       alt={actor.name}
                       className='w-full h-44 object-cover rounded mb-1'
                     />
@@ -71,7 +82,7 @@ const MovieDetail = () => {
                 ))}
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>
