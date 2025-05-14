@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const Home = () => {
 
@@ -41,26 +42,28 @@ const Home = () => {
     }, []);
 
     return (
-        <div className='p-6 bg-gradient-to-b from-black to-gray-900 min-h-screen'>
+        <div className='p-6 bg-gradient-to-b from-black to-gray-900 min-h-screen space-y-12'>
             {categories.map(({ key, title }) => (
-                <section key={key} className='mb-12'>
-                    <h2 className='text-3xl text-white font-extrabold mb-6'>{title}</h2>
-                    <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6'>
+                <section key={key} className=''>
+                    <h2 className='text-2xl md:text-3xl text-white font-bold mb-6'>{title}</h2>
+                    <div className='flex overflow-x-auto space-x-4 no-scrollbar pb-2'>
                         {allMovies[key]?.map((movie) => (
-                            <div
-                                key={movie.id}
-                                className='bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300'
-                            >
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                    alt={movie.original_title}
-                                    className='w-full object-cover'
-                                />
-                                <div className='p-6'>
-                                    <h3 className='text-sm font-semibold text-white truncate'>{movie.original_title}</h3>
-                                    <p className='text-xs text-gray-400 mt-1'>{movie.vote_average}</p>
+                            <Link to={`/movie/${movie.id}`} key={movie.id}>
+                                <div
+                                    key={movie.id}
+                                    className='min-w-[150px] sm:min-w-[180px] bg-gray-800 rounded-lg shadow-md overflow-hidden hover:scale-105 transition-transform duration-300'
+                                >
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                        alt={movie.original_title}
+                                        className='w-full h-60 object-cover'
+                                    />
+                                    <div className='p-2'>
+                                        <h3 className='text-sm font-semibold text-white truncate'>{movie.original_title}</h3>
+                                        <p className='text-xs text-gray-400 mt-1'>{movie.vote_average}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </section>
