@@ -1,12 +1,37 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { AiOutlineCheck, AiOutlinePlus } from "react-icons/ai";
+
 
 const MovieDetail = () => {
 
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [credit, setCredit] = useState(null);
+
+  const [isMyList, setIsMyList] = useState(false);
+
+  const handleToggleMylist = () => {
+    if (!movie) return;
+    const mylist = JSON.parse(localStorage.getItem('mylist')) || [];
+
+    if (isMyList) {
+      const removeMylist = mylist.filter(m => m.id !== movie.id);
+      localStorage.setItem('mylist', JSON.stringify(removeMylist));
+      setIsMyList(false);
+    } else {
+      mylist.push({ id: movie.id, title: movie.title, poster_path: movie.poster_path });
+      localStorage.setItem('mylist', JSON.stringify(mylist));
+      setIsMyList(true);
+    }
+  }
+
+  useEffect(() => {
+    if (!movie) return;
+    const mylist = JSON.parse(localStorage.getItem('mylist')) || [];
+    setIsMyList(mylist.some(m => m.id === movie.id));
+  }, [movie]);
 
   const token = import.meta.env.VITE_APP_TMDB_TOKEN;
 
@@ -50,13 +75,32 @@ const MovieDetail = () => {
               className='w-full h-full object-cover brightness-50'
             />
             <div className='absolute inset-0 bg-gradient-to-b from-transparent to-black'></div>
-            <div className='absolute bottom-8 left-6 md:left-16 max-w-3xl'>
+            <div className='absolute bottom-2 left-6 md:left-16 max-w-3xl'>
               <h1 className='text-4xl md:text-6xl font-bold mb-4'>{movie.title}</h1>
               <p className='text-sm text-gray-300 mb-2'>
                 {movie.release_date} • ⭐ {movie.vote_average}
               </p>
               <p className='text-gray-200 mb-4'>{movie.genres.map(g => g.name).join(', ')}</p>
               <p className='text-gray-300 hidden md:block'>{movie.overview}</p>
+              <button
+                onClick={handleToggleMylist}
+                title={isMyList ? 'Saved to My List' : 'Save to My List'}
+                className={`
+        group flex items-center gap-2 px-4 py-2 rounded-md border border-white
+        transition-all duration-300 text-sm font-medium uppercase mt-2
+        ${isMyList
+                    ? ' text-white hover:bg-neutral-800 border-none'
+                    : ' text-white hover:bg-white hover:text-black border-none'}
+      `}
+              >
+                {isMyList ? (
+                  <AiOutlineCheck size={20} className="transition-transform group-hover:scale-110" />
+                ) : (
+                  <AiOutlinePlus size={20} className="transition-transform group-hover:scale-110" />
+                )}
+                <span className="hidden sm:inline">My List</span>
+              </button>
+
             </div>
           </div>
 

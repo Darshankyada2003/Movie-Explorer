@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
 
@@ -42,9 +43,11 @@ const Home = () => {
     }, []);
 
     return (
+
         <div className='p-6 bg-gradient-to-b from-black to-gray-900 min-h-screen space-y-12'>
+            <Navbar />
             {categories.map(({ key, title }) => (
-                <section key={key} className=''>
+                <section key={key} className='' id={key}>
                     <h2 className='text-2xl md:text-3xl text-white font-bold mb-6'>{title}</h2>
                     <div className='flex overflow-x-auto space-x-4 no-scrollbar pb-2'>
                         {allMovies[key]?.map((movie) => (
