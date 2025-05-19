@@ -84,7 +84,6 @@ const MovieDetail = () => {
               <p className='text-gray-300 hidden md:block'>{movie.overview}</p>
               <button
                 onClick={handleToggleMylist}
-                title={isMyList ? 'Saved to My List' : 'Save to My List'}
                 className={`
         group flex items-center gap-2 px-4 py-2 rounded-md border border-white
         transition-all duration-300 text-sm font-medium uppercase mt-2
@@ -98,7 +97,7 @@ const MovieDetail = () => {
                 ) : (
                   <AiOutlinePlus size={20} className="transition-transform group-hover:scale-110" />
                 )}
-                <span className="hidden sm:inline">My List</span>
+                <span className="hidden sm:inline">{isMyList ? 'Saved to My List' : 'Save to My List'}</span>
               </button>
 
             </div>
